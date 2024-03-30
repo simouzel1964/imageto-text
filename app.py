@@ -11,6 +11,10 @@ api_key = os.getenv("GOOGLE_GENERATIVEAI_API_KEY")
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel('gemini-pro-vision')  # Replace with your desired model
 
+
+
+
+
 # --- Step 2: Database Setup ---
 conn = sqlite3.connect('user_data.db')
 cursor = conn.cursor()
@@ -55,11 +59,24 @@ def get_gemini_response(input, image, full_name, email):
   else:
       response=model.generate_content(image)
   return response.text
+        
+
+
+    # Attempt to access text - modify structure as needed!
+  if 'text' in response:  # Assuming there might be a 'text' field
+        return response['text']
+  else: 
+        print("No 'text' field found. Here's the full response:")
+        print(response)
+        return None  # Or a more appropriate default value
+
 
 
 # --- Step 4: Streamlit App Structure ---
 st.set_page_config(page_title="Image Demo")
 st.header("Image Teller")
+st.write("Welcome! This app analyzes images and generates creative text. Get started by uploading an image and click on 'tell me about the image button', if you want more, provide a description or question.  Give input command 'write a blog', 'write a story', 'product promotion.'")
+
 
 # Get user information (call only once)
 print("Before calling get_user_info") 
